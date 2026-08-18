@@ -192,7 +192,7 @@ def build_graph():
 if __name__ == "__main__":
     app = build_graph()
 
-    user_question = "What should a Data Science Manager know before moving into a financial services tax technology role?"
+    user_question = "What is machine learning?"
 
     result = app.invoke(
         {"messages": [HumanMessage(content=user_question)], "next": ""},

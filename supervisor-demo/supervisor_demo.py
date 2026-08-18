@@ -57,11 +57,24 @@ class AgentState(TypedDict):
 # llama-3.3-70b-versatile is a good free-tier model: fast and capable enough
 # for this kind of routing/reasoning task.
 
+model_name = os.environ.get("GROQ_MODEL", "groq/compound-mini")
+api_key = os.environ.get("GROQ_API_KEY")
+if not api_key:
+    raise ValueError("Set GROQ_API_KEY before running this script.")
+
 llm = ChatGroq(
-    model="llama-3.3-70b-versatile",
+    model=model_name,
     temperature=0,
-    api_key=os.environ.get("GROQ_API_KEY", "not-set"),
+    api_key=api_key,
 )
+
+
+def invoke_with_user_tail(messages):
+    """Groq requires the final message in a chat request to be from the user."""
+    convo = list(messages)
+    if not convo or convo[-1].type != "human":
+        convo.append(HumanMessage(content="Continue based on the conversation above."))
+    return llm.invoke(convo)
 
 
 # ---------------------------------------------------------------------------
@@ -83,7 +96,7 @@ def researcher_node(state: AgentState) -> dict:
         "Do not write a final answer - just gather and list what's relevant. "
         "Prefix your response with 'RESEARCH NOTES:'."
     ))
-    response = llm.invoke([system_prompt] + state["messages"])
+    response = invoke_with_user_tail([system_prompt] + state["messages"])
     return {"messages": [AIMessage(content=response.content, name="researcher")]}
 
 
@@ -96,7 +109,7 @@ def writer_node(state: AgentState) -> dict:
         "in the conversation, write a clear, final answer for the user. "
         "Prefix your response with 'FINAL ANSWER:'."
     ))
-    response = llm.invoke([system_prompt] + state["messages"])
+    response = invoke_with_user_tail([system_prompt] + state["messages"])
     return {"messages": [AIMessage(content=response.content, name="writer")]}
 
 
@@ -123,7 +136,7 @@ def supervisor_node(state: AgentState) -> dict:
         f"Respond with exactly one word from this list: {OPTIONS}. "
         "No punctuation, no explanation - just the word."
     ))
-    response = llm.invoke([system_prompt] + state["messages"])
+    response = invoke_with_user_tail([system_prompt] + state["messages"])
     choice = response.content.strip()
 
     # simple safety net in case the model doesn't follow instructions exactly
@@ -179,7 +192,7 @@ def build_graph():
 if __name__ == "__main__":
     app = build_graph()
 
-    user_question = "What should a Data Science Manager know before moving into a financial services tax technology role?"
+    user_question = "What is machine learning?"
 
     result = app.invoke(
         {"messages": [HumanMessage(content=user_question)], "next": ""},
