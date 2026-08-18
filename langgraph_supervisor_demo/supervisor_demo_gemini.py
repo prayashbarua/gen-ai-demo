@@ -1,8 +1,8 @@
 """
-LangGraph Supervisor + Workers Demo
-====================================
+LangGraph Supervisor + Workers Demo (Gemini Edition)
+=====================================================
 Goal: learn the core LangGraph building blocks by building a tiny
-multi-agent system from scratch.
+multi-agent system from scratch using Google's Gemini model.
 
 Architecture:
 
@@ -20,16 +20,14 @@ gather info -> control returns to Supervisor -> Supervisor routes to
 Writer to compose the final answer -> Supervisor sees the task is
 done -> graph ends (FINISH).
 
-This is the same pattern used in real orchestration systems: a
-central router node + specialist worker nodes + a shared state object
-that flows through the graph.
+This version uses Google's Gemini model instead of Groq.
 """
 
 import os
 from typing import Literal, TypedDict, Annotated
 
 from langchain_core.messages import HumanMessage, SystemMessage, AIMessage
-from langchain_groq import ChatGroq
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langgraph.graph import StateGraph, END
 from langgraph.graph.message import add_messages
 
@@ -52,29 +50,21 @@ class AgentState(TypedDict):
 # ---------------------------------------------------------------------------
 # 2. LLM SETUP
 # ---------------------------------------------------------------------------
-# Groq is free to sign up for at https://console.groq.com
-# Once you have a key: export GROQ_API_KEY="your-key-here"
-# llama-3.3-70b-versatile is a good free-tier model: fast and capable enough
-# for this kind of routing/reasoning task.
+# Google's Gemini API
+# Sign up at https://ai.google.dev
+# Once you have a key: export GOOGLE_API_KEY="your-key-here"
 
-model_name = os.environ.get("GROQ_MODEL", "groq/compound-mini")
-api_key = os.environ.get("GROQ_API_KEY")
+api_key = os.environ.get("GOOGLE_API_KEY")
 if not api_key:
-    raise ValueError("Set GROQ_API_KEY before running this script.")
+    raise ValueError("Set GOOGLE_API_KEY before running this script.")
 
-llm = ChatGroq(
+model_name = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash")
+
+llm = ChatGoogleGenerativeAI(
     model=model_name,
     temperature=0,
     api_key=api_key,
 )
-
-
-def invoke_with_user_tail(messages):
-    """Groq requires the final message in a chat request to be from the user."""
-    convo = list(messages)
-    if not convo or convo[-1].type != "human":
-        convo.append(HumanMessage(content="Continue based on the conversation above."))
-    return llm.invoke(convo)
 
 
 # ---------------------------------------------------------------------------
@@ -96,7 +86,7 @@ def researcher_node(state: AgentState) -> dict:
         "Do not write a final answer - just gather and list what's relevant. "
         "Prefix your response with 'RESEARCH NOTES:'."
     ))
-    response = invoke_with_user_tail([system_prompt] + state["messages"])
+    response = llm.invoke([system_prompt] + state["messages"])
     return {"messages": [AIMessage(content=response.content, name="researcher")]}
 
 
@@ -109,7 +99,7 @@ def writer_node(state: AgentState) -> dict:
         "in the conversation, write a clear, final answer for the user. "
         "Prefix your response with 'FINAL ANSWER:'."
     ))
-    response = invoke_with_user_tail([system_prompt] + state["messages"])
+    response = llm.invoke([system_prompt] + state["messages"])
     return {"messages": [AIMessage(content=response.content, name="writer")]}
 
 
@@ -136,7 +126,7 @@ def supervisor_node(state: AgentState) -> dict:
         f"Respond with exactly one word from this list: {OPTIONS}. "
         "No punctuation, no explanation - just the word."
     ))
-    response = invoke_with_user_tail([system_prompt] + state["messages"])
+    response = llm.invoke([system_prompt] + state["messages"])
     choice = response.content.strip()
 
     # simple safety net in case the model doesn't follow instructions exactly
