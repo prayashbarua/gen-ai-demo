@@ -1,0 +1,147 @@
+[
+  {
+    "client_id": "C001",
+    "name": "Maria Chen",
+    "age": 58,
+    "risk_tolerance": "Moderate",
+    "annual_income": 165000,
+    "net_worth": 1450000,
+    "investment_goals": [
+      "Retire at 62 with $70k/year income",
+      "Downsize home within 5 years"
+    ],
+    "advisor_notes": "Long-time client since 2014. Prefers quarterly check-ins. Sensitive to market downturns near retirement.",
+    "accounts": [
+      {
+        "account_type": "401(k)",
+        "balance": 620000,
+        "holdings": [
+          {"ticker": "VOO", "shares": 800, "cost_basis": 320.00},
+          {"ticker": "BND", "shares": 1500, "cost_basis": 78.50}
+        ]
+      },
+      {
+        "account_type": "Roth IRA",
+        "balance": 310000,
+        "holdings": [
+          {"ticker": "AAPL", "shares": 400, "cost_basis": 145.00},
+          {"ticker": "VOO", "shares": 250, "cost_basis": 300.00}
+        ]
+      },
+      {
+        "account_type": "Taxable Brokerage",
+        "balance": 520000,
+        "holdings": [
+          {"ticker": "VOO", "shares": 600, "cost_basis": 280.00},
+          {"ticker": "BND", "shares": 900, "cost_basis": 80.00},
+          {"ticker": "AAPL", "shares": 150, "cost_basis": 130.00}
+        ]
+      }
+    ]
+  },
+  {
+    "client_id": "C002",
+    "name": "James Okafor",
+    "age": 34,
+    "risk_tolerance": "Aggressive",
+    "annual_income": 240000,
+    "net_worth": 410000,
+    "investment_goals": [
+      "Maximize long-term growth",
+      "Save for a house down payment in ~3 years"
+    ],
+    "advisor_notes": "Software engineer at a large tech firm, significant RSU income. Comfortable with volatility but new to fixed income.",
+    "accounts": [
+      {
+        "account_type": "401(k)",
+        "balance": 180000,
+        "holdings": [
+          {"ticker": "QQQ", "shares": 300, "cost_basis": 340.00},
+          {"ticker": "NVDA", "shares": 150, "cost_basis": 410.00}
+        ]
+      },
+      {
+        "account_type": "Taxable Brokerage",
+        "balance": 230000,
+        "holdings": [
+          {"ticker": "TSLA", "shares": 200, "cost_basis": 220.00},
+          {"ticker": "NVDA", "shares": 100, "cost_basis": 460.00},
+          {"ticker": "QQQ", "shares": 120, "cost_basis": 355.00}
+        ]
+      }
+    ]
+  },
+  {
+    "client_id": "C003",
+    "name": "Linda Alvarez",
+    "age": 71,
+    "risk_tolerance": "Conservative",
+    "annual_income": 58000,
+    "net_worth": 980000,
+    "investment_goals": [
+      "Preserve capital",
+      "Generate stable dividend income",
+      "Leave an inheritance for grandchildren"
+    ],
+    "advisor_notes": "Retired schoolteacher, widow since 2019. Very risk-averse. Wants plain-language explanations, no jargon.",
+    "accounts": [
+      {
+        "account_type": "IRA",
+        "balance": 540000,
+        "holdings": [
+          {"ticker": "BND", "shares": 3200, "cost_basis": 82.00},
+          {"ticker": "JNJ", "shares": 900, "cost_basis": 150.00},
+          {"ticker": "KO", "shares": 1200, "cost_basis": 58.00}
+        ]
+      },
+      {
+        "account_type": "Taxable Brokerage",
+        "balance": 440000,
+        "holdings": [
+          {"ticker": "BND", "shares": 2500, "cost_basis": 85.00},
+          {"ticker": "JNJ", "shares": 600, "cost_basis": 155.00}
+        ]
+      }
+    ]
+  },
+  {
+    "client_id": "C004",
+    "name": "David Park",
+    "age": 45,
+    "risk_tolerance": "Moderate-Aggressive",
+    "annual_income": 310000,
+    "net_worth": 2100000,
+    "investment_goals": [
+      "Fund two children's college education (529 plans)",
+      "Grow the business's excess cash reserves",
+      "Retire by 60"
+    ],
+    "advisor_notes": "Owns a small manufacturing business. Cash flow is lumpy quarter to quarter. Wants tax-efficient strategies.",
+    "accounts": [
+      {
+        "account_type": "SEP IRA",
+        "balance": 890000,
+        "holdings": [
+          {"ticker": "VTI", "shares": 1800, "cost_basis": 210.00},
+          {"ticker": "VXUS", "shares": 2200, "cost_basis": 55.00}
+        ]
+      },
+      {
+        "account_type": "529 Plan",
+        "balance": 165000,
+        "holdings": [
+          {"ticker": "VTI", "shares": 400, "cost_basis": 195.00}
+        ]
+      },
+      {
+        "account_type": "Taxable Brokerage",
+        "balance": 610000,
+        "holdings": [
+          {"ticker": "VTI", "shares": 1100, "cost_basis": 200.00},
+          {"ticker": "VXUS", "shares": 900, "cost_basis": 52.00},
+          {"ticker": "MSFT", "shares": 300, "cost_basis": 340.00}
+        ]
+      }
+    ]
+  }
+]
