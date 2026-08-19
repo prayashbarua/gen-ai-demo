@@ -52,19 +52,20 @@ class AgentState(TypedDict):
 # ---------------------------------------------------------------------------
 # Google's Gemini API
 # Sign up at https://ai.google.dev
-# Once you have a key: export GOOGLE_API_KEY="your-key-here"
+# Set your API key: export GOOGLE_API_KEY="your-key-here"
 
 api_key = os.environ.get("GOOGLE_API_KEY")
 if not api_key:
     raise ValueError("Set GOOGLE_API_KEY before running this script.")
 
-model_name = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash")
+model_name = os.environ.get("GEMINI_MODEL", "gemini-1.5-flash")
 
 llm = ChatGoogleGenerativeAI(
     model=model_name,
     temperature=0,
     api_key=api_key,
 )
+print(f"✓ Gemini LLM initialized with model: {model_name}")
 
 
 # ---------------------------------------------------------------------------
